@@ -1,4 +1,4 @@
-package com.github.iamhi.hiintegration.confusedseeker;
+package com.github.iamhi.hiintegration.confusedseeker.testclient;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
