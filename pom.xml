@@ -6,7 +6,6 @@
     <modules>
         <module>client</module>
         <module>test-client</module>
-		<module>config</module>
 	</modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>
