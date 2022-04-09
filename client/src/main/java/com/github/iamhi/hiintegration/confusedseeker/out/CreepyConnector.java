@@ -1,6 +1,10 @@
 package com.github.iamhi.hiintegration.confusedseeker.out;
 
+import reactor.core.publisher.Mono;
+
 public interface CreepyConnector {
 
-    void joinChannel(String channel);
+    Mono<String> getToken();
+
+    Mono<Void> joinChannel(String channel);
 }

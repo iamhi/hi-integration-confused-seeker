@@ -4,7 +4,7 @@ import reactor.core.publisher.Flux;
 
 public interface CarelessSender {
 
-    void yeet(String message);
+    String yeet(String message);
 
     Flux<String> supply();
 }

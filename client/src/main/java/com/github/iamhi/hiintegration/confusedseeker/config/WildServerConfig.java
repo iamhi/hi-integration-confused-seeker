@@ -1,7 +1,6 @@
 package com.github.iamhi.hiintegration.confusedseeker.config;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,10 +9,9 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class WildServerConfig {
 
-    String url;
+    private String url;
 
-    String port;
+    private String port;
 
-    @Value("websocket.suffix")
-    String websocketSuffix;
+    private String websocketSuffix;
 }
