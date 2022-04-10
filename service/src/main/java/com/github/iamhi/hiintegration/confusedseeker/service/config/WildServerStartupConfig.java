@@ -1,5 +1,6 @@
 package com.github.iamhi.hiintegration.confusedseeker.service.config;
 
+import com.github.iamhi.hiintegration.confusedseeker.core.MadOrganizer;
 import com.github.iamhi.hiintegration.confusedseeker.out.CreepyConnector;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,10 @@ public class WildServerStartupConfig {
 
     private final CreepyConnector creepyConnector;
 
+    private final MadOrganizer madOrganizer;
+
     @PostConstruct
     private void conenct() {
-        creepyConnector.joinChannel(wildServerConfig.listen).subscribe();
+        madOrganizer.start().then(creepyConnector.joinChannel(wildServerConfig.listen)).subscribe();
     }
-
 }

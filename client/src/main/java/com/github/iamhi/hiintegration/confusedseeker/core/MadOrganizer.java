@@ -1,6 +1,8 @@
 package com.github.iamhi.hiintegration.confusedseeker.core;
 
+import reactor.core.publisher.Mono;
+
 public interface MadOrganizer {
 
-    void start();
+    Mono<Void> start();
 }

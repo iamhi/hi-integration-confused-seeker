@@ -4,11 +4,11 @@ import com.github.iamhi.hiintegration.confusedseeker.config.WildServerConfig;
 import com.github.iamhi.hiintegration.confusedseeker.in.GrumpyListener;
 import com.github.iamhi.hiintegration.confusedseeker.out.CarelessSender;
 import com.github.iamhi.hiintegration.confusedseeker.out.CreepyConnector;
-import jakarta.annotation.PostConstruct;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient;
 import org.springframework.web.reactive.socket.client.WebSocketClient;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 
@@ -17,12 +17,12 @@ record MadOrganizerImpl(
     CarelessSender carelessSender,
     CreepyConnector creepyConnector,
     GrumpyListener grumpyListener,
-    WildServerConfig wildServerConfig
+    WildServerConfig wildServerConfig,
+    ForgetfulState forgetfulState
 ) implements MadOrganizer {
 
     @Override
-    @PostConstruct
-    public void start() {
+    public Mono<Void> start() {
         WebSocketClient client = new ReactorNettyWebSocketClient();
         URI uri = URI.create("ws://"
             + wildServerConfig.getUrl()
@@ -30,7 +30,7 @@ record MadOrganizerImpl(
             + wildServerConfig.getPort()
             + wildServerConfig.getWebsocketSuffix());
 
-        creepyConnector.getToken().map(token -> {
+        return creepyConnector.getToken().map(token -> {
             HttpHeaders httpHeaders = new HttpHeaders();
 
             httpHeaders.add("connect-token", token);
@@ -39,6 +39,6 @@ record MadOrganizerImpl(
         }).flatMap(httpHeaders -> client.execute(uri, httpHeaders, webSocketSession ->
             webSocketSession
                 .send(carelessSender.supply().map(webSocketSession::textMessage))
-                .and(grumpyListener.hearMeOut(webSocketSession.receive())))).subscribe();
+                .and(grumpyListener.hearMeOut(webSocketSession.receive()))));
     }
 }
