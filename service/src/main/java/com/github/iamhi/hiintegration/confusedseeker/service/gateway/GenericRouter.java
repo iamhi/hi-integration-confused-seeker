@@ -24,7 +24,7 @@ public class GenericRouter {
             ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(Map.of("ping", "PONG from Connections")), Map.class))
+                .body(Mono.just(Map.of("ping", "PONG from Confused seeker")), Map.class))
             .andRoute(POST(ROUTER_PREFIX + "/message"), genericHandler::sendMessage);
     }
 }

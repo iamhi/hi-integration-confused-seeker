@@ -104,4 +104,19 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <activation>
+                <property>
+                    <name>profile</name>
+                    <value>docker</value>
+                </property>
+            </activation>
+            <build>
+                <finalName>confused-seeker-service-docker</finalName>
+            </build>
+        </profile>
+    </profiles>
 </project>
