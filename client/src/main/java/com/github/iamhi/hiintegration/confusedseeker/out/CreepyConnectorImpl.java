@@ -1,5 +1,6 @@
 package com.github.iamhi.hiintegration.confusedseeker.out;
 
+import com.github.iamhi.hiintegration.confusedseeker.config.TokenConfig;
 import com.github.iamhi.hiintegration.confusedseeker.config.WildServerConfig;
 import com.github.iamhi.hiintegration.confusedseeker.core.ForgetfulState;
 import org.springframework.stereotype.Service;
@@ -10,14 +11,16 @@ import reactor.core.publisher.Mono;
 public record CreepyConnectorImpl(
     WebClient.Builder builder,
     WildServerConfig wildServerConfig,
-    ForgetfulState forgetfulState
+    ForgetfulState forgetfulState,
+    TokenConfig tokenConfig
 ) implements CreepyConnector {
 
     @Override
     public Mono<String> getToken() {
         WebClient webClient = getClient();
 
-        return webClient.get().uri("/token")
+        return webClient.post().uri("/token")
+            .bodyValue(new TokenRequest(tokenConfig.getSecret()))
             .retrieve()
             .bodyToMono(String.class)
             .map(forgetfulState::setToken);
