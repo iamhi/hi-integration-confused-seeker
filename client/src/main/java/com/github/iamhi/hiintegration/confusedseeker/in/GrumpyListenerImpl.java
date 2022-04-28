@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 @Service
 class GrumpyListenerImpl implements GrumpyListener {
 
-    MessageHandler messageHandler = new EchoMessageHandler();
+    private MessageHandler messageHandler = new EchoMessageHandler();
 
     @Override
     public Mono<Void> hearMeOut(Flux<WebSocketMessage> messages) {
