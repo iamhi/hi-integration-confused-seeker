@@ -1,39 +1,57 @@
 package com.github.iamhi.hiintegration.confusedseeker.core;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 @Component
 public class ForgetfulStateImpl implements ForgetfulState {
 
-    String token = "";
+    Map<String, String> tokenMap = new HashMap<>();
 
-    List<Consumer<String>> tokenConsumers = new ArrayList<>();
+    Map<String, String> hashHashSecret = new HashMap<>();
+
+    MultiValueMap<String, Consumer<String>> tokenConsumers = new LinkedMultiValueMap<>();
 
     @Override
-    public String getToken() {
+    public String getToken(String destination) {
+        return tokenMap.get(destination);
+    }
+
+    @Override
+    public void addSecret(String destination, String secret) {
+        hashHashSecret.put(destination, secret);
+    }
+
+    @Override
+    public String getSecret(String destination) {
+        return hashHashSecret.get(destination);
+    }
+
+    @Override
+    public String setToken(String destination, String token) {
+        tokenMap.put(destination, token);
+
+        tokenConsumers.computeIfPresent(destination, (key, list) -> {
+            list.forEach(tokenConsumer -> tokenConsumer.accept(token));
+
+            return new ArrayList<>();
+        });
+
         return token;
     }
 
     @Override
-    public String setToken(String token) {
-        this.token = token;
-
-        tokenConsumers.forEach(tokenConsumer -> tokenConsumer.accept(token));
-        tokenConsumers.clear();
-
-        return token;
-    }
-
-    @Override
-    public void addTokenObserver(Consumer<String> getToken) {
-        if (!"".equals(token)) {
-            getToken.accept(token);
+    public void addTokenObserver(String destination, Consumer<String> getToken) {
+        if (!"".equals(tokenMap.get(destination))) {
+            getToken.accept(tokenMap.get(destination));
         } else {
-            tokenConsumers.add(getToken);
+            tokenConsumers.add(destination, getToken);
         }
     }
 }

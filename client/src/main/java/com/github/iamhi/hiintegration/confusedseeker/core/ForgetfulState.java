@@ -4,9 +4,13 @@ import java.util.function.Consumer;
 
 public interface ForgetfulState {
 
-    String setToken(String token);
+    String setToken(String destination, String token);
 
-    String getToken();
+    String getToken(String destination);
 
-    void addTokenObserver(Consumer<String> getToken);
+    void addSecret(String destination, String secret);
+
+    String getSecret(String destination);
+
+    void addTokenObserver(String destination, Consumer<String> getToken);
 }

@@ -1,4 +1,4 @@
-package com.github.iamhi.hiintegration.confusedseeker.service.gateway;
+package com.github.iamhi.hiintegration.confusedseeker.service.in;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +25,8 @@ public class GenericRouter {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(Map.of("ping", "PONG from Confused seeker")), Map.class))
-            .andRoute(POST(ROUTER_PREFIX + "/message"), genericHandler::sendMessage);
+            .andRoute(POST(ROUTER_PREFIX + "/message"), genericHandler::sendMessage)
+            .andRoute(POST(ROUTER_PREFIX + "/connect"), genericHandler::connect)
+            .andRoute(POST(ROUTER_PREFIX + "/channel"), genericHandler::joinChannel);
     }
 }

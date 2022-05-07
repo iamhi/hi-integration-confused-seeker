@@ -12,10 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class WildServerStartupConfig {
 
-    private final WildServerConnectConfig wildServerConfig;
-
-    private final CreepyConnector creepyConnector;
-
     private final MadOrganizer madOrganizer;
 
     private final GrumpyListener grumpyListener;
@@ -24,8 +20,8 @@ public class WildServerStartupConfig {
 
     @PostConstruct
     private void conenct() {
-        grumpyListener.attachHandler(redisMessageHandler);
+//        grumpyListener.attachHandler(redisMessageHandler);
 
-        madOrganizer.start().then(creepyConnector.joinChannel(wildServerConfig.listen)).subscribe();
+        madOrganizer.start().subscribe();
     }
 }
